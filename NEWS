@@ -1,3 +1,40 @@
+envalysis 0.4
+======================
+
+NEW FEATURES
+
+MINOR IMPROVEMENTS
+* `texture()` now takes data as formula
+* tibble support for `texture()`
+* `loq()` iterates only until significant digits won't change anymore
+
+BUG FIXES
+* Force percentage bounds for `texture()` to 0 and 100
+* Increased margins for `theme_publish()`
+
+DEPRECATED FUNCTIONS
+
+DEFUNCT FUNCTIONS
+
+
+
+envalysis 0.3.3
+======================
+
+NEW FEATURES
+
+MINOR IMPROVEMENTS
+* First CRAN release
+* Better package description
+
+BUG FIXES
+
+DEPRECATED FUNCTIONS
+
+DEFUNCT FUNCTIONS
+
+
+
 envalysis 0.3.2
 ======================
 
@@ -75,7 +112,7 @@ envalysis 0.2.1
 NEW FEATURES
 
 MINOR IMPROVEMENTS
-* Switch to `drc` package for texture curve fitting
+* Switch to drc package for texture curve fitting
 
 BUG FIXES
 

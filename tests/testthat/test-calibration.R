@@ -1,9 +1,9 @@
 context("Calibration")
 
-data("din32645")
+data(din32645)
 din <- calibration(Area ~ Conc, data = din32645)
 
-data("neitzel2003")
+data(neitzel2003)
 neitzel <- calibration(Meas ~ Conc, data = neitzel2003)
 
 test_that("Correct R squared", {
@@ -23,7 +23,7 @@ test_that("LOQ calculations", {
   expect_equal(round(loq(neitzel, k = 2, alpha = 0.01)[1], 3), 0.059)
 })
 
-test_that("Blank method vs. estimation", {
+test_that("Blank method vs. estimation from calibration curve", {
   expect_message(
     alt <- calibration(Area ~ Conc, data = din32645[din32645$Conc != 0, ])
   )
@@ -31,10 +31,9 @@ test_that("Blank method vs. estimation", {
   expect_equal(loq(din), loq(alt))
 })
 
-test_that("Unbalanced design", {
+test_that("Unbalanced design gives warning", {
   expect_warning(
     calibration(Area ~ Conc, data = rbind(din32645, din32645[15,]))
   )
 })
-
 

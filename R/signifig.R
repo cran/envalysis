@@ -6,14 +6,13 @@
 #' deviation).
 #'
 #' @param mean a numeric vector or data frame object containing the averaged
-#' values
+#' values.
 #' @param error a numeric vector or data frame object containing the respective
-#' error terms
+#' error terms.
 #' @param data a data frame containing the specified columns. If empty,
-#' \code{mean}
-#' and \code{error} need to be given as numeric vectors
+#' \code{mean} and \code{error} need to be given as numeric vectors.
 #' @param signif.na an integer controlling to which significant digit the mean
-#' value should be rounded when no error data was given
+#' value should be rounded when no error data was given.
 #' @param style a string specifying the output style to be used. The default
 #' style \code{"pm"} reports the results as "3 ± 6", while \code{"par"} results
 #' in outputs like "0.26 (0.02)". "siunitx" returns "0.26 (2)" which might be
@@ -33,9 +32,9 @@ signifig <- function(mean, error, data, signif.na = 2, style = "pm") {
     error <- data[, deparse(substitute(error))]
   }
   
-  if (length(mean) != length(error)) stop("Mean and error term of unequal size")
+  if (length(mean) != length(error)) stop("mean and error term of unequal size")
   if (!style %in% c("pm", "par", "siunitx")) {
-    warning("Style unknown, use 'pm' instead")
+    warning("style unknown, use 'pm' instead")
     style <- "pm"
   }
   
