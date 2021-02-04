@@ -1,8 +1,8 @@
 Package: envalysis
 Type: Package
 Title: Miscellaneous Functions for Environmental Analyses
-Version: 0.4.1
-Date: 2021-01-21
+Version: 0.4.2
+Date: 2021-02-04
 Authors@R: c(person("Zacharias", "Steinmetz", role = c("aut", "cre"),
     email = "steinmetz-z@uni-landau.de",
     comment = c(ORCID = "0000-0001-6675-5033")))
@@ -16,18 +16,19 @@ Description: Small toolbox for data analyses in environmental chemistry and
 URL: https://github.com/zsteinmetz/envalysis
 BugReports: https://github.com/zsteinmetz/envalysis/issues
 Encoding: UTF-8
-License: GPL-3
+License: GPL (>= 3)
 LazyLoad: yes
 LazyData: yes
 VignetteBuilder: knitr
 Depends: R (>= 4.0.0)
 Imports: drc, ggplot2
-Suggests: knitr, rmarkdown, testthat, MASS, data.table, tibble,
-        soiltexture
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0), MASS, data.table,
+        tibble, soiltexture
 RoxygenNote: 7.1.1
+Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2021-01-21 14:45:14 UTC; steinmetz-z
+Packaged: 2021-02-04 12:10:34 UTC; steinmetz-z
 Author: Zacharias Steinmetz [aut, cre]
     (<https://orcid.org/0000-0001-6675-5033>)
 Repository: CRAN
-Date/Publication: 2021-01-21 16:20:10 UTC
+Date/Publication: 2021-02-04 12:30:02 UTC
