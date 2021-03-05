@@ -3,6 +3,7 @@
 \name{calibration}
 \alias{calibration}
 \alias{print.calibration}
+\alias{summary.calibration}
 \alias{plot.calibration}
 \alias{lod}
 \alias{lod.calibration}
@@ -10,84 +11,110 @@
 \alias{loq.calibration}
 \title{Analytical calibration functions}
 \usage{
-calibration(formula, data = NULL, weights = NULL, model = "lm", ...)
+calibration(
+  formula,
+  data = NULL,
+  blanks = NULL,
+  weights = NULL,
+  model = "lm",
+  check_assumptions = TRUE,
+  ...
+)
 
 \method{print}{calibration}(x, ...)
 
+\method{summary}{calibration}(object, ...)
+
 \method{plot}{calibration}(x, interval = "conf", level = 0.95, ...)
 
-lod(x, ...)
+lod(object, ...)
 
-\method{lod}{calibration}(x, alpha = 0.01, level = 0.05, ...)
+\method{lod}{calibration}(object, blanks = NULL, alpha = 0.01, level = 0.05, ...)
 
-loq(x, ...)
+loq(object, ...)
 
-\method{loq}{calibration}(x, alpha = 0.01, k = 3, level = 0.05, maxiter = 10, ...)
+\method{loq}{calibration}(
+  object,
+  blanks = NULL,
+  alpha = 0.01,
+  k = 3,
+  level = 0.05,
+  maxiter = 10,
+  ...
+)
 }
 \arguments{
 \item{formula}{model formula providing the recorded signal intensities with
 respect to the nominal analyte concentrations in the form of
 \code{signal ~ concentration} or \code{signal ~ concentraion - 1}; model
-formulae are currently restricted to those forms, however, the possibility
+formulas are currently restricted to those forms, however, the possibility
 to use \code{log} or \code{sqrt} transformed data will be implemented in the
 future.}
 
 \item{data}{an optional data frame containing the variables in the model.}
 
+\item{blanks}{a vector of numeric blank values overriding those automatically
+retrieved from calibration data.}
+
 \item{weights}{an optional character string containing one or more model
-variables, for example, in the form of "1/\code{concentration}^0.5" or
-"1/\code{signal}" which is internally converted to a numeric vector and
+variables, for example, in the form of "\code{1/concentration^0.5}" or
+"\code{1/signal}" which is internally converted to a numeric vector and
 passed to the fitting process of the selected model.}
 
 \item{model}{model class to be used for fitting; currently,
-\code{\link[stats]{lm}} and \code{\link[MASS]{rlm}} are supported.}
+\code{\link[stats]{lm}()} and \code{\link[MASS]{rlm}()} are supported.}
+
+\item{check_assumptions}{automatically check for normality and
+homoscedasticity of model residuals using \code{\link[stats]{shapiro.test}()}
+and \code{\link[lmtest]{bptest}()}, respectively; only executed if
+\code{weights == NULL}.}
 
 \item{\dots}{further arguments passed to the submethod, namely the
-respective model environment such as \code{lm}), \code{plot}, or
-\code{print}.}
+respective model environment such as \code{lm}(), \code{plot}(), or
+\code{print}().}
 
-\item{x}{an object of class \code{calibration} with a model formula
+\item{x, object}{an object of class '\code{calibration}' with a model formula
 as shown above.}
 
 \item{interval}{Type of interval calculation (can be abbreviated); see
-\code{\link[stats]{predict}} for details.}
+\code{\link[stats]{predict}()} for details.}
 
-\item{level}{tolerance/confidence level; see \code{\link[stats]{predict}}
-and \code{\link[stats]{confint}} for details.}
+\item{level}{tolerance/confidence level; see \code{\link[stats]{predict}()}
+and \code{\link[stats]{confint}()} for details.}
 
 \item{alpha}{error tolerance for the detection limit (critical value).}
 
-\item{k}{relative uncertainty for the limit of quantification (1/beta).}
+\item{k}{relative uncertainty for the limit of quantification
+(\code{1/beta}).}
 
 \item{maxiter}{a positive integer specifying the maximum number of iterations
 to calculate the LOQ.}
 }
 \value{
 \code{calibration} returns an object of \code{\link[base]{class}}
-"calibration". \code{print} calls the function parameters together with the
-respective LOD and LOQ. \code{plot} plots the respective calibration curve
-together with the measurement values. \code{summary} may be used to retrieve
-the model parameters to be found as a list item called "model".
+'\code{calibration}'. \code{print()} calls the function parameters together with the
+respective LOD and LOQ. \code{plot()} plots the respective calibration curve
+together with the measurement values. \code{summary()} may be used to retrieve
+the summary of the underlying model.
 }
 \description{
 Defines a \code{calibration} object for the calculation of concentrations
-from measurement signals including estimatations for the limit of detection
-(LOD) and limit of quantification (LOQ) in accordance with DIN
-32645:2008-11.
+from measurement signals including estimations for the limit of detection
+(LOD) and limit of quantification (LOQ) in accordance with DIN 32645 (2008).
 
 The LOD is defined as the lowest quantity of a substance that can be
 distinguished from the absence of that substance (blank value) within a
-given confidence level (alpha). The LOQ is defined as the lowest quantity of
+given confidence level (\code{alpha}). The LOQ is defined as the lowest quantity of
 a substance that can be quantified/distinguished from another sample given
-with respect to a defined confidence level (k).
+with respect to a defined confidence level (\code{k}).
 }
 \details{
 If the \code{data} supplied to \code{calibration} contain more than one blank
-value, i.e. measurements with a nominal concentration of zero, the LOD and
-LOQ are calculated from the deviation of the blank samples. This method is
-called "blank method" according to DIN 32645:2008-11 and supposed to be more
-accurate than the so-called "calibration method" which will be used for the
-estimation of LOD and LOQ when \code{data} does not contain zero
+value, namely measurements with a nominal concentration of or close to zero,
+the LOD and LOQ are calculated from the deviation of the blank samples. This
+method is called "blank method" according to DIN 32645 (2008) and supposed
+to be more accurate than the so-called "calibration method" which will be
+used for the estimation of LOD and LOQ when \code{data} does not contain zero
 concentration measurements.
 }
 \examples{
@@ -95,7 +122,7 @@ data(din32645)
 din <- calibration(Area ~ Conc, data = din32645)
 din
 plot(din)
-summary(din$model)
+summary(din)
 
 lod(din)
 
@@ -103,19 +130,32 @@ loq(din)
 
 }
 \references{
-DIN 32645:2008-11, 2008. Chemical analysis - Decision limit, detection limit
-and determination limit under repeatability conditions - Terms, methods,
-evaluation (Technical standard). Deutsches Institut für Normung, Berlin.
+Almeida, A. M. D., Castel-Branco, M. M., & Falcao, A. C. (2002). Linear
+regression for calibration lines revisited: weighting schemes for
+bioanalytical methods. \emph{Journal of Chromatography B}, \bold{774}(2),
+215-222. \doi{10.1016/S1570-0232(02)00244-1}.
 
-Currie, L.A., 1999. Nomenclature in evaluation of analytical methods
+Currie, L.A. (1999). Nomenclature in evaluation of analytical methods
 including detection and quantification capabilities:
-(IUPAC Recommendations 1995). Analytica Chimica Acta 391, 105–126.
+(IUPAC Recommendations 1995). \emph{Analytica Chimica Acta} \bold{391}, 105-126.
 
-Massart, D.L., Vandeginste, B.G., Buydens, L.M.C., Lewi, P.J.,
-Smeyers-Verbeke, J., 1997. Handbook of chemometrics and qualimetrics:
-Part A. Elsevier Science Inc.
+DIN 32645 (2008). \emph{Chemical analysis - Decision limit, detection limit
+and determination limit under repeatability conditions - Terms, methods,
+evaluation}. Technical standard. Deutsches Institut für Normung, Berlin.
+
+Massart, D.L., Vandeginste, B.G., Buydens, L.M.C., Lewi, P.J., &
+Smeyers-Verbeke, J. (1997). \emph{Handbook of chemometrics and qualimetrics:
+Part A}. Elsevier Science Inc.
 }
 \seealso{
-\code{\link{icp}}, \code{\link{din32645}}
+Other calibration: 
+\code{\link{din32645}},
+\code{\link{icp}},
+\code{\link{matrix_effect}()},
+\code{\link{neitzel2003}},
+\code{\link{weight_select}()}
+}
+\author{
+Zacharias Steinmetz
 }
 \concept{calibration}

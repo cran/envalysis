@@ -7,14 +7,14 @@ Miscellaneous Functions for Environmental Analyses
 ![R-CMD-check](https://github.com/zsteinmetz/envalysis/workflows/R-CMD-check/badge.svg)
 [![License](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/envalysis)](https://CRAN.R-project.org/package=envalysis)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1240304.svg)](https://doi.org/10.5281/zenodo.1240304)
+[![DOI](https://img.shields.io/badge/shortDOI-10/ft9p-blue.svg)](https://doi.org/ft9p)
 
 **envalysis** is an R package containing miscellaneous functions for data
-analyses in environmental chemistry and ecotoxicology. Provides, for example,
+analysis in environmental chemistry and ecotoxicology. Provides, for example,
 `calibration()` to calculate calibration curves and corresponding limits of
-detection (LODs) and quantification (LOQs) according to German DIN
-32645:2008-11. `texture()` makes it easy to estimate soil particle size
-distributions from hydrometer measurements (ASTM D422-63(2007)e2).
+detection (LODs) and limits of quantification (LOQs) according to German DIN
+32645 (2008). `texture()` makes it easy to estimate soil particle size
+distributions from hydrometer measurements (ASTM D422-63, 2007).
 Some functions of the package require **ggplot2** or **drc**.
 
 ## Functions
@@ -22,27 +22,29 @@ Currently, the following functions are available:
 
 ### Data manipulation and analysis
 
-* Confidence intervals `CI()` and standard errors `se()`
-* Root mean square errors `rmse()`
-* Limit of detection (LOD) `lod()` and limit of quantification (LOQ) `loq()` as
-part of the `calibration` class to produce linear calibration curves according
-to German DIN 32645:2008-11
-* Various sorption isotherms `sorption()`
+* Calculating limits of detection `lod()` and limits of quantification `loq()`
+  as part of the `calibration` class to produce linear calibration curves
+  in accordance with German DIN 32645 (2008)
+* Finding optimum weights for weighted calibrations using `weight_select()`
+* Estimating matrix effects (signal suppression/enhancement) with `matrix_effect()`
 * Determine particle size distributions and soil texture classes (DIN/USDA)
-measured with a soil hydrometer in accordance with ASTM D422-63(2007)e2 using
-`texture()`; see
-[vignette](https://htmlpreview.github.io/?https://github.com/zsteinmetz/envalysis/blob/master/vignettes/texture.html)
-for details
+  measured with a soil hydrometer in accordance with ASTM D422-63 (2007) using
+  `texture()`; see
+  [vignette](https://htmlpreview.github.io/?https://github.com/zsteinmetz/envalysis/blob/master/vignettes/texture.html)
+  for details
+* Confidence intervals `CI()`, standard errors `se()`, and root mean square
+  errors `rmse()`
+* Various sorption isotherms `sorption()`
 
 ### Data presentation
 
 * Categorize water drop penetration times according to Bisdom et al. (1993)
-`bisdom()`
-* Report significant figures, namely round means and erros to the least
-significant digit, using `signifig()`
+  with `bisdom()`
+* Report significant figures, namely round means and errors to the least
+  significant digit, using `signifig()`
 * Clean, black-and-white ggplot2 theme for scientific publications
-`theme_publish()`; a preview is available
-[here](https://htmlpreview.github.io/?https://github.com/zsteinmetz/envalysis/blob/master/vignettes/theme_publish.html)
+  `theme_publish()`; a preview is available
+  [here](https://htmlpreview.github.io/?https://github.com/zsteinmetz/envalysis/blob/master/vignettes/theme_publish.html)
 
 ## Installation
 
@@ -65,5 +67,4 @@ into your R console (requires **devtools**):
 ```r
 if (!require(devtools)) install.packages("devtools")
 devtools::install_github("zsteinmetz/envalysis")
-library(envalysis)
 ```

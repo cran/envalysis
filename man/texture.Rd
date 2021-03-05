@@ -33,8 +33,8 @@ texture(reading, ...)
 \item{reading}{a numeric vector of data values providing the hydrometer
 readings at the bottom of the meniscus.}
 
-\item{\dots}{further arguments to be passed to \code{texture} (currently not
-used), \code{print}, or \code{plot}.}
+\item{\dots}{further arguments to be passed to \code{texture}() (currently not
+used), \code{print}(), or \code{plot}().}
 
 \item{formula}{an object of class '\code{\link[stats]{formula}}' of the form
 \code{reading ~ blank + time + temp}.}
@@ -58,19 +58,21 @@ proposed in the ASTM guideline.}
 values are \code{"auto"} for auto-detection (default), \code{"151H"}, and
 \code{"152H"}.}
 
-\item{model}{string is passed to \code{\link[drc]{drm}}, "auto" chooses the
+\item{model}{string is passed to \code{\link[drc]{drm}()}, "auto" chooses the
 best fitting model automatically.}
 
 \item{plot}{logical; if \code{TRUE} the particle size distribution is plotted.}
 
-\item{x}{an object of class "texture".}
+\item{x}{an object of class '\code{texture}'.}
 }
 \value{
-\code{texture} returns an object of \code{\link[base]{class}} "texture". The
-functions \code{print} and \code{plot} are available to retrieve the soil
-texture classes and the particle size distribution, respectively.
+\code{texture} returns an object of \code{\link[base]{class}} '\code{texture}.
+The functions \code{print}() and \code{plot}() are available to retrieve the
+soil texture classes and the particle size distribution, respectively.
 
-An object of class "texture" is a list containing the following components:
+An object of class '\code{texture}' is a list containing the following
+components:
+
 \tabular{ll}{
 \code{meta} \tab Measurement meta data\cr
 \code{distribution} \tab data frame providing the particle size
@@ -83,7 +85,7 @@ distribution\cr
 \description{
 Calculates the particle size distribution and both DIN and USDA texture
 classes from a series of hydrometer readings according to
-ASTM D422-63(2007)e2.
+ASTM D422-63 (2007).
 }
 \examples{
 data(clayloam)
@@ -98,8 +100,15 @@ texture(reading ~ blank + time + temperature, clayloam)
 
 }
 \references{
-ASTM D422-63(2007)e2, 2007. Standard Test Method for Particle-Size Analysis
-of Soils (Technical standard). ASTM International, West Conshohocken, PA.
+ASTM D422-63 (2007). \emph{Standard Test Method for Particle-Size Analysis
+of Soils}. Technical standard. ASTM International, West Conshohocken, PA.
 Available from \url{http://www.astm.org/Standards/D422.htm}
+}
+\seealso{
+Other texture: 
+\code{\link{clayloam}}
+}
+\author{
+Zacharias Steinmetz
 }
 \concept{texture}

@@ -1,3 +1,5 @@
+#' @family calibration
+#' 
 #' @title ICP-AES calibration data
 #' 
 #' @description
@@ -15,8 +17,8 @@
 #' Replicate: \tab number of the respective replicate\cr
 #' }
 #' 
-#' @seealso
-#' \code{\link{calibration}}
+#' @author
+#' Zacharias Steinmetz
 #' 
 #' @docType data
 #' @keywords data

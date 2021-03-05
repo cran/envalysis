@@ -2,8 +2,8 @@
 #' 
 #' @description
 #' This function reports the significant figures of a given \code{mean} together
-#' with its respective \code{error} term (e.g. confidence interval or standard
-#' deviation).
+#' with its respective \code{error} term (for instance confidence interval or
+#' standard deviation).
 #'
 #' @param mean a numeric vector or data frame object containing the averaged
 #' values.
@@ -21,9 +21,12 @@
 #' @examples
 #' signifig(mean = c(0.28,5), error = c(0.688, 8))
 #' 
+#' @author 
+#' Zacharias Steinmetz
+#' 
 #' @references
-#' Taylor, J.R., 1997. Error analysis: the study of uncertainties in physical
-#' measurements. University Science Books, Sausalito, CA.
+#' Taylor, J.R. (1997). \emph{Error analysis: the study of uncertainties in physical
+#' measurements}. University Science Books, Sausalito, CA.
 #' 
 #' @export
 signifig <- function(mean, error, data, signif.na = 2, style = "pm") {
@@ -38,25 +41,17 @@ signifig <- function(mean, error, data, signif.na = 2, style = "pm") {
     style <- "pm"
   }
   
-  # TODO: Replace for loop by lapply
-  output <- c()
-  for (i in 1:length(mean)) {
-    e <- signif(error[i], 1)
-    if (is.na(e) | e == 0) {
-      m <- signif(mean[i], signif.na)
-    } else {
-      if (e >= 1) {
-        m <- round(mean[i], -nchar(as.character(e))+1)
-        l <- e
-      } else {
-        n <- nchar(as.character(e))-2
-        m <- format(round(mean[i], n), nsmall = n)
-        l <- as.numeric(substr(e, nchar(e), nchar(e)))
-      }
-    }
-    if (style == "pm") output <- c(output, paste(m, "\u00b1", e))
-    if (style == "par") output <- c(output, paste0(m," (", e,")"))
-    if (style == "siunitx") output <- c(output, paste0(m,"(", l,")"))
-  }
+  e <- signif(error, 1)
+  m <- ifelse(is.na(e) | e == 0, signif(mean, signif.na),
+              ifelse(e >= 1, round(mean, -nchar(as.character(e)) + 1),
+                     format(round(mean, nchar(as.character(e)) - 2),
+                            nsmall = nchar(as.character(e)) - 2))
+              )
+  l <- as.numeric(substr(e, nchar(e), nchar(e)))
+
+  if (style == "pm") output <- paste(m, "\u00b1", e)
+  if (style == "par") output <- paste0(m," (", e,")")
+  if (style == "siunitx") output <- paste0(m,"(", l,")")
+
   return(output)
 }

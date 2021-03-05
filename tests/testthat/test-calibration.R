@@ -1,8 +1,31 @@
+# Helper function for expect_snapshot_file()
+save_png <- function(code, width = 600, height = 400) {
+  path <- tempfile(fileext = ".png")
+  png(path, width = width, height = height)
+  on.exit(dev.off())
+  code
+  
+  path
+}
+
 data(din32645)
 din <- calibration(Area ~ Conc, data = din32645)
 
 data(neitzel2003)
 neitzel <- calibration(Meas ~ Conc, data = neitzel2003)
+
+test_that("print(), summary(), and plot() work", {
+  expect_output(print(din))
+  expect_output(print(summary(din)))
+  expect_silent(plot(din))
+})
+
+test_that("Snapshot output consistent", {
+  expect_snapshot_output(print(din))
+  expect_snapshot_output(print(neitzel))
+  skip_on_ci()
+  expect_snapshot_file(save_png(plot(din)), "plot.png")
+})
 
 test_that("Correct R squared computed correctly", {
   expect_equal(round(din$adj.r.squared, 3), 0.983)
@@ -35,7 +58,12 @@ test_that("Difference between blank method and estimation from calibration curve
 })
 
 test_that("Unbalanced design gives warning", {
-  expect_warning(calibration(Area ~ Conc, data = rbind(din32645, din32645[15,])))
+  suppressWarnings(
+    ublcd <- calibration(Area ~ Conc, data = rbind(din32645, din32645[15,]),
+                       check_assumptions = F)
+    )
+  expect_warning(lod(ublcd))
+  expect_warning(loq(ublcd))
 })
 
 w1 <- calibration(Area ~ Conc, data = din32645, weights = "1/Area^2")

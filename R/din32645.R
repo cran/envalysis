@@ -1,3 +1,5 @@
+#' @family calibration
+#' 
 #' @title Calibration data from DIN 32645
 #' 
 #' @description
@@ -10,13 +12,13 @@
 #' Area: \tab measurement signal\cr
 #' }
 #' 
-#' @references 
-#' DIN 32645:2008-11, 2008. Chemical analysis - Decision limit, detection limit
-#' and determination limit under repeatability conditions - Terms, methods,
-#' evaluation (Technical standard). Deutsches Institut für Normung, Berlin.
+#' @author
+#' Deutsches Institut für Normung
 #' 
-#' @seealso
-#' \code{\link{calibration}}
+#' @references 
+#' DIN 32645 (2008). \emph{Chemical analysis - Decision limit, detection limit
+#' and determination limit under repeatability conditions - Terms, methods,
+#' evaluation}. Technical standard. Deutsches Institut für Normung, Berlin.
 #' 
 #' @docType data
 #' @keywords data

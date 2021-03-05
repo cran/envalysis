@@ -1,79 +1,91 @@
 #' @family calibration
-#' 
+#'
 #' @title Analytical calibration functions
 #'
 #' @description
 #' Defines a \code{calibration} object for the calculation of concentrations
-#' from measurement signals including estimatations for the limit of detection
-#' (LOD) and limit of quantification (LOQ) in accordance with DIN
-#' 32645:2008-11.
+#' from measurement signals including estimations for the limit of detection
+#' (LOD) and limit of quantification (LOQ) in accordance with DIN 32645 (2008).
 #' 
 #' The LOD is defined as the lowest quantity of a substance that can be
 #' distinguished from the absence of that substance (blank value) within a
-#' given confidence level (alpha). The LOQ is defined as the lowest quantity of
+#' given confidence level (\code{alpha}). The LOQ is defined as the lowest quantity of
 #' a substance that can be quantified/distinguished from another sample given
-#' with respect to a defined confidence level (k).
+#' with respect to a defined confidence level (\code{k}).
 #'
 #' @param formula model formula providing the recorded signal intensities with
 #' respect to the nominal analyte concentrations in the form of
 #' \code{signal ~ concentration} or \code{signal ~ concentraion - 1}; model
-#' formulae are currently restricted to those forms, however, the possibility
+#' formulas are currently restricted to those forms, however, the possibility
 #' to use \code{log} or \code{sqrt} transformed data will be implemented in the
 #' future.
 #' @param data an optional data frame containing the variables in the model.
+#' @param blanks a vector of numeric blank values overriding those automatically
+#' retrieved from calibration data.
 #' @param weights an optional character string containing one or more model
-#' variables, for example, in the form of "1/\code{concentration}^0.5" or
-#' "1/\code{signal}" which is internally converted to a numeric vector and
+#' variables, for example, in the form of "\code{1/concentration^0.5}" or
+#' "\code{1/signal}" which is internally converted to a numeric vector and
 #' passed to the fitting process of the selected model.
 #' @param model model class to be used for fitting; currently,
-#' \code{\link[stats]{lm}} and \code{\link[MASS]{rlm}} are supported.
+#' \code{\link[stats]{lm}()} and \code{\link[MASS]{rlm}()} are supported.
+#' @param check_assumptions automatically check for normality and
+#' homoscedasticity of model residuals using \code{\link[stats]{shapiro.test}()}
+#' and \code{\link[lmtest]{bptest}()}, respectively; only executed if
+#' \code{weights == NULL}.
 #' @param \dots further arguments passed to the submethod, namely the
-#' respective model environment such as \code{lm}), \code{plot}, or
-#' \code{print}.
+#' respective model environment such as \code{lm}(), \code{plot}(), or
+#' \code{print}().
 #' 
 #' @details
 #' If the \code{data} supplied to \code{calibration} contain more than one blank
-#' value, i.e. measurements with a nominal concentration of zero, the LOD and
-#' LOQ are calculated from the deviation of the blank samples. This method is
-#' called "blank method" according to DIN 32645:2008-11 and supposed to be more
-#' accurate than the so-called "calibration method" which will be used for the
-#' estimation of LOD and LOQ when \code{data} does not contain zero
+#' value, namely measurements with a nominal concentration of or close to zero,
+#' the LOD and LOQ are calculated from the deviation of the blank samples. This
+#' method is called "blank method" according to DIN 32645 (2008) and supposed
+#' to be more accurate than the so-called "calibration method" which will be
+#' used for the estimation of LOD and LOQ when \code{data} does not contain zero
 #' concentration measurements.
 #' 
 #' @return
 #' \code{calibration} returns an object of \code{\link[base]{class}}
-#' "calibration". \code{print} calls the function parameters together with the
-#' respective LOD and LOQ. \code{plot} plots the respective calibration curve
-#' together with the measurement values. \code{summary} may be used to retrieve
-#' the model parameters to be found as a list item called "model".
+#' '\code{calibration}'. \code{print()} calls the function parameters together with the
+#' respective LOD and LOQ. \code{plot()} plots the respective calibration curve
+#' together with the measurement values. \code{summary()} may be used to retrieve
+#' the summary of the underlying model.
+#' 
+#' @author 
+#' Zacharias Steinmetz
 #' 
 #' @examples
 #' data(din32645)
 #' din <- calibration(Area ~ Conc, data = din32645)
 #' din
 #' plot(din)
-#' summary(din$model)
+#' summary(din)
 #'
 #' @references
-#' DIN 32645:2008-11, 2008. Chemical analysis - Decision limit, detection limit
-#' and determination limit under repeatability conditions - Terms, methods,
-#' evaluation (Technical standard). Deutsches Institut für Normung, Berlin.
+#' Almeida, A. M. D., Castel-Branco, M. M., & Falcao, A. C. (2002). Linear
+#' regression for calibration lines revisited: weighting schemes for
+#' bioanalytical methods. \emph{Journal of Chromatography B}, \bold{774}(2),
+#' 215-222. \doi{10.1016/S1570-0232(02)00244-1}.
 #' 
-#' Currie, L.A., 1999. Nomenclature in evaluation of analytical methods
+#' Currie, L.A. (1999). Nomenclature in evaluation of analytical methods
 #' including detection and quantification capabilities:
-#' (IUPAC Recommendations 1995). Analytica Chimica Acta 391, 105–126.
+#' (IUPAC Recommendations 1995). \emph{Analytica Chimica Acta} \bold{391}, 105-126.
 #' 
-#' Massart, D.L., Vandeginste, B.G., Buydens, L.M.C., Lewi, P.J.,
-#' Smeyers-Verbeke, J., 1997. Handbook of chemometrics and qualimetrics:
-#' Part A. Elsevier Science Inc.
+#' DIN 32645 (2008). \emph{Chemical analysis - Decision limit, detection limit
+#' and determination limit under repeatability conditions - Terms, methods,
+#' evaluation}. Technical standard. Deutsches Institut für Normung, Berlin.
+#' 
+#' Massart, D.L., Vandeginste, B.G., Buydens, L.M.C., Lewi, P.J., &
+#' Smeyers-Verbeke, J. (1997). \emph{Handbook of chemometrics and qualimetrics:
+#' Part A}. Elsevier Science Inc.
 #'
-#' @seealso
-#' \code{\link{icp}}, \code{\link{din32645}}
-#' 
-#' @importFrom stats qt coef qchisq model.frame
+#' @importFrom stats qt coef qchisq model.frame shapiro.test
 #' @importFrom graphics plot lines
+#' @importFrom lmtest bptest
 #' @export
-calibration <- function(formula, data = NULL, weights = NULL, model = "lm", ...) {
+calibration <- function(formula, data = NULL, blanks = NULL, weights = NULL,
+                        model = "lm", check_assumptions = TRUE, ...) {
   if (missing(formula) || (length(formula) != 3L) || (length(attr(terms(formula[-2L]), 
                                                                   "term.labels")) != 1L))
     stop("'formula' missing or incorrect")
@@ -81,7 +93,7 @@ calibration <- function(formula, data = NULL, weights = NULL, model = "lm", ...)
   # Collate data
   mf <- model.frame(formula, data)
   newdata <- mf[mf[2L] != 0, ]
-  blanks <- mf[mf[2L] == 0, 1]
+  if (is.null(blanks)) blanks <- mf[mf[2L] == 0, 1]
   
   if (!is.null(weights) & length(weights) == 1 & is.character(weights)) {
     newweights <- with(newdata, eval(parse(text = weights)))
@@ -103,20 +115,38 @@ calibration <- function(formula, data = NULL, weights = NULL, model = "lm", ...)
   
   cal$adj.r.squared <- summary(model)$adj.r.squared
   if (is.null(cal$adj.r.squared)) cal$adj.r.squared <- NA
+  
+  cal$data <- data
   cal$blanks <- blanks
   cal$lod <- lod(cal)
   cal$loq <- loq(cal)
+  cal$relerr <- relerr(cal)
+  
+  if (is.null(weights) & check_assumptions) {
+    swt <- shapiro.test(model$residuals)
+    bpt <- bptest(model)
+    
+    cat("Check for normality of residuals\n")
+    print(swt)
+    cat("Check for homoscedasticity of residuals\n")
+    print(bpt)
+    
+    if (swt$p.value < 0.05 || bpt$p.value < 0.05)
+      warning("model assumptions may not be met; double check graphically and ",
+              "consider using a weighted model instead")
+  }
+  
   return(cal)
 }
 
-#' @family calibration
 #' @rdname calibration
 #' 
 #' @export
 print.calibration <- function(x, ...) {
   print(x$model, ...)
   
-  cat(paste0("Adjusted R-squared:  ", signif(x$adj.r.squared, 3), "\n"))
+  cat(paste0("Adjusted R-squared:  ", signif(x$adj.r.squared, 4), "\n"))
+  cat(paste0("Sum relative error:  ", signif(sum(abs(x$relerr)), 4), "\n"))
   cat("\n")
   cat("Blanks:\n")
   print(x$blanks)
@@ -124,13 +154,19 @@ print.calibration <- function(x, ...) {
   print(signif(rbind(x$lod, x$loq), 3))
 }
 
-#' @family calibration
+#' @rdname calibration
+#'
+#' @export
+summary.calibration <- function(object, ...) {
+  summary(object$model, ...)
+}
+
 #' @rdname calibration
 #' 
 #' @param interval Type of interval calculation (can be abbreviated); see
-#' \code{\link[stats]{predict}} for details.
-#' @param level tolerance/confidence level; see \code{\link[stats]{predict}}
-#' and \code{\link[stats]{confint}} for details.
+#' \code{\link[stats]{predict}()} for details.
+#' @param level tolerance/confidence level; see \code{\link[stats]{predict}()}
+#' and \code{\link[stats]{confint}()} for details.
 #' 
 #' @export
 plot.calibration <- function(x, interval = "conf", level = 0.95, ...) {
@@ -152,9 +188,9 @@ plot.calibration <- function(x, interval = "conf", level = 0.95, ...) {
   )
 }
 
-#' @family calibration
 #' @rdname calibration
-#' @param x an object of class \code{calibration} with a model formula
+#' 
+#' @param x,object an object of class '\code{calibration}' with a model formula
 #' as shown above.
 #' @param alpha error tolerance for the detection limit (critical value).
 #'
@@ -162,20 +198,21 @@ plot.calibration <- function(x, interval = "conf", level = 0.95, ...) {
 #' lod(din)
 #' 
 #' @export
-lod <- function(x, ...) {
+lod <- function(object, ...) {
   UseMethod("lod")
 }
 
 #' @export
-lod.default <- function(x, ...) {
+lod.default <- function(object,  ...) {
   stop("object needs to be of class 'calibration'")
 }
 
 #' @rdname calibration
 #' 
 #' @export
-lod.calibration <- function(x, alpha = 0.01, level = 0.05, ...) {
-  model <- x$model
+lod.calibration <- function(object, blanks = NULL, alpha = 0.01, level = 0.05,
+                            ...) {
+  model <- object$model
   
   conc <- model$model[,2]
   n <- length(conc)
@@ -188,13 +225,15 @@ lod.calibration <- function(x, alpha = 0.01, level = 0.05, ...) {
 
   b <- coef(model)[2]
 
-  if (length(x$blanks) > 1) {
+  if (is.null(blanks)) blanks <- object$blanks
+  
+  if (length(blanks) > 1) {
     # Direct method (LOD from blanks)
-    sl <- sd(x$blanks) / b
+    sl <- sd(blanks) / b
     val <- sl * -qt(alpha, n - 1) * sqrt(1/n + 1/m)
   } else {
     # Indirect method (LOD from calibration curve)
-    if (length(x$blanks) == 1) {
+    if (length(blanks) == 1) {
       message("only one blank value supplied; LOD is estimated from the calibration curve")
     } else {
       message("no blanks provided; LOD is estimated from the calibration curve") 
@@ -207,10 +246,10 @@ lod.calibration <- function(x, alpha = 0.01, level = 0.05, ...) {
   matrix(round(res, digs), nrow = 1, dimnames = list("LOD", names(res)))
 }
 
-#' @family calibration
 #' @rdname calibration
 #' 
-#' @param k relative uncertainty for the limit of quantification (1/beta).
+#' @param k relative uncertainty for the limit of quantification
+#' (\code{1/beta}).
 #' @param maxiter a positive integer specifying the maximum number of iterations
 #' to calculate the LOQ.
 #' 
@@ -218,20 +257,20 @@ lod.calibration <- function(x, alpha = 0.01, level = 0.05, ...) {
 #' loq(din)
 #' 
 #' @export
-loq <- function(x, ...)
+loq <- function(object, ...)
   UseMethod("loq")
 
 #' @export
-loq.default <- function(x, ...) {
+loq.default <- function(object, ...) {
   stop("object needs to be of class 'calibration'")
 }
 
 #' @rdname calibration
 #' 
 #' @export
-loq.calibration <- function(x, alpha = 0.01, k = 3, level = 0.05,
-                            maxiter = 10, ...) {
-  model <- x$model
+loq.calibration <- function(object, blanks = NULL, alpha = 0.01, k = 3,
+                            level = 0.05, maxiter = 10, ...) {
+  model <- object$model
   
   conc <- model$model[,2]
   n <- length(conc)
@@ -247,7 +286,9 @@ loq.calibration <- function(x, alpha = 0.01, k = 3, level = 0.05,
   sx0 <- summary(model)$sigma / b
   Qx <- sum((conc - mean(conc))^2) / m
   
-  val <- k * x$lod[1]
+  if (is.null(blanks)) blanks <- object$blanks
+  
+  val <- k * lod(object, blanks, alpha, level)[1]
   for (i in 1:maxiter) {
     prval <- val
     val <- k * sx0 * -qt(alpha/2, n - model$rank) *
@@ -268,4 +309,3 @@ loq.calibration <- function(x, alpha = 0.01, k = 3, level = 0.05,
 
 # TODO: Inverse predict?
 # TODO: Add "Erfassungsgrenze"
-# TODO: Check alpha/beta, also to be passed from calibration to lod

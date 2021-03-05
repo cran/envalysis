@@ -26,14 +26,17 @@ used together with xtable for automated LaTeX table outputs.}
 }
 \description{
 This function reports the significant figures of a given \code{mean} together
-with its respective \code{error} term (e.g. confidence interval or standard
-deviation).
+with its respective \code{error} term (for instance confidence interval or
+standard deviation).
 }
 \examples{
 signifig(mean = c(0.28,5), error = c(0.688, 8))
 
 }
 \references{
-Taylor, J.R., 1997. Error analysis: the study of uncertainties in physical
-measurements. University Science Books, Sausalito, CA.
+Taylor, J.R. (1997). \emph{Error analysis: the study of uncertainties in physical
+measurements}. University Science Books, Sausalito, CA.
+}
+\author{
+Zacharias Steinmetz
 }

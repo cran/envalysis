@@ -5,7 +5,7 @@
 #' @description
 #' Calculates the particle size distribution and both DIN and USDA texture
 #' classes from a series of hydrometer readings according to
-#' ASTM D422-63(2007)e2. 
+#' ASTM D422-63 (2007). 
 #' 
 #' @param formula an object of class '\code{\link[stats]{formula}}' of the form
 #' \code{reading ~ blank + time + temp}.
@@ -23,16 +23,18 @@
 #' @param hydrometer a character string specifying the hydrometer used; accepted
 #' values are \code{"auto"} for auto-detection (default), \code{"151H"}, and
 #' \code{"152H"}.
-#' @param model string is passed to \code{\link[drc]{drm}}, "auto" chooses the
+#' @param model string is passed to \code{\link[drc]{drm}()}, "auto" chooses the
 #' best fitting model automatically.
 #' @param plot logical; if \code{TRUE} the particle size distribution is plotted.
 #' 
 #' @return
-#' \code{texture} returns an object of \code{\link[base]{class}} "texture". The
-#' functions \code{print} and \code{plot} are available to retrieve the soil
-#' texture classes and the particle size distribution, respectively.
+#' \code{texture} returns an object of \code{\link[base]{class}} '\code{texture}.
+#' The functions \code{print}() and \code{plot}() are available to retrieve the
+#' soil texture classes and the particle size distribution, respectively.
 #' 
-#' An object of class "texture" is a list containing the following components:
+#' An object of class '\code{texture}' is a list containing the following
+#' components:
+#' 
 #' \tabular{ll}{
 #' \code{meta} \tab Measurement meta data\cr
 #' \code{distribution} \tab data frame providing the particle size
@@ -41,6 +43,9 @@
 #' \code{din} \tab Main DIN texture classes\cr
 #' \code{usda} \tab Main USDA texture classes\cr
 #' }
+#' 
+#' @author
+#' Zacharias Steinmetz
 #' 
 #' @examples
 #' data(clayloam)
@@ -54,8 +59,8 @@
 #' texture(reading ~ blank + time + temperature, clayloam)
 #'
 #' @references
-#' ASTM D422-63(2007)e2, 2007. Standard Test Method for Particle-Size Analysis
-#' of Soils (Technical standard). ASTM International, West Conshohocken, PA.
+#' ASTM D422-63 (2007). \emph{Standard Test Method for Particle-Size Analysis
+#' of Soils}. Technical standard. ASTM International, West Conshohocken, PA.
 #' Available from \url{http://www.astm.org/Standards/D422.htm}
 #' 
 #' @importFrom stats terms predict na.omit
@@ -66,7 +71,6 @@ texture <- function(reading, ...) {
   UseMethod("texture")
 }
 
-#' @family texture
 #' @rdname texture
 #' 
 #' @export
@@ -82,7 +86,6 @@ texture.formula <- function(formula, data = NULL, ...) {
   do.call("texture", c(lst, list(...)))
 }
 
-#' @family texture
 #' @rdname texture
 #' 
 #' @export
@@ -151,12 +154,11 @@ texture.default <- function(reading, blank, time, temp, conc = 50, Gs = 2.65,
   return(out)
 }
 
-#' @family texture
 #' @rdname texture
 #' 
-#' @param x an object of class "texture".
-#' @param \dots further arguments to be passed to \code{texture} (currently not
-#' used), \code{print}, or \code{plot}.
+#' @param x an object of class '\code{texture}'.
+#' @param \dots further arguments to be passed to \code{texture}() (currently not
+#' used), \code{print}(), or \code{plot}().
 #' 
 #' @export
 print.texture <- function(x, ...) {
@@ -177,7 +179,6 @@ print.texture <- function(x, ...) {
   print(x$usda, digits = 3)
 }
 
-#' @family texture
 #' @rdname texture
 #'
 #' @export
