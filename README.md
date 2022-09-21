@@ -4,10 +4,10 @@ Miscellaneous Functions for Environmental Analyses
 
 [![CRAN version](https://www.r-pkg.org/badges/version/envalysis)](https://CRAN.R-project.org/package=envalysis) 
 [![Project Status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-![R-CMD-check](https://github.com/zsteinmetz/envalysis/workflows/R-CMD-check/badge.svg)
+[![R-CMD-check](https://github.com/zsteinmetz/envalysis/workflows/R-CMD-check/badge.svg)](https://github.com/zsteinmetz/envalysis/actions)
 [![License](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/envalysis)](https://CRAN.R-project.org/package=envalysis)
-[![DOI](https://img.shields.io/badge/shortDOI-10/ft9p-blue.svg)](https://doi.org/ft9p)
+[![DOI](https://img.shields.io/badge/shortDOI-10/ft9p-blue.svg)](https://doi.org/10.5281/ZENODO.1240304)
 
 **envalysis** is an R package containing miscellaneous functions for data
 analysis in environmental chemistry and ecotoxicology. Provides, for example,
@@ -18,6 +18,7 @@ distributions from hydrometer measurements (ASTM D422-63, 2007).
 Some functions of the package require **ggplot2** or **drc**.
 
 ## Functions
+
 Currently, the following functions are available:
 
 ### Data manipulation and analysis
