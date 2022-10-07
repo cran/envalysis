@@ -1,8 +1,8 @@
 Package: envalysis
 Type: Package
 Title: Miscellaneous Functions for Environmental Analyses
-Version: 0.5.3
-Date: 2022-09-21
+Version: 0.5.4
+Date: 2022-10-07
 Authors@R: c(person("Zacharias", "Steinmetz", role = c("aut", "cre"),
       email = "steinmetz-z@uni-landau.de",
       comment = c(ORCID = "0000-0001-6675-5033")),
@@ -33,10 +33,10 @@ Suggests: knitr, rmarkdown, testthat (>= 3.0.0), MASS, data.table,
 RoxygenNote: 7.2.1
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2022-09-21 09:15:19 UTC; steinmetz-z
+Packaged: 2022-10-07 14:17:43 UTC; steinmetz-z
 Author: Zacharias Steinmetz [aut, cre]
     (<https://orcid.org/0000-0001-6675-5033>),
   Julius Albert [ctb] (<https://orcid.org/0000-0001-5468-6069>),
   Kilian Kenngott [ctb] (<https://orcid.org/0000-0002-9600-4502>)
 Repository: CRAN
-Date/Publication: 2022-09-21 09:30:02 UTC
+Date/Publication: 2022-10-07 15:10:02 UTC

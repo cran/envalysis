@@ -1,6 +1,6 @@
-f4f4634657fd912a650f7114501986a3 *DESCRIPTION
+d32a364288757aa227105cd65bdd3300 *DESCRIPTION
 c09095a9bd8fb3b6698af3fdbf8b0614 *NAMESPACE
-e4d65da975cdb2055fd57c383c437930 *NEWS.md
+68ac000ee54b27faf4c727370a40ff86 *NEWS.md
 d190abae5400b412151cce086688580e *R/bisdom.R
 a5a7be784d94234185ba500506bf6896 *R/calibration.R
 0e81c494bc5088c4c1d602b698d45e88 *R/clayloam.R
@@ -16,7 +16,7 @@ d8e47fb855bc477140e7536f9f79248d *R/signifig.R
 c6bfedbaad9cb8e11ec37ef9f46114a1 *R/sorption.R
 ff5d46171f50f425c0c0445976236682 *R/sysdata.rda
 4cd2f84e1b1a0ea6f877a81c2935a178 *R/texture.R
-b9c24e7d558311178c4b6a92de73aef4 *R/theme_publish.R
+68c31b4af9e5d35d6651fb82dc164315 *R/theme_publish.R
 8b949a832f506588430416a85dd810e5 *R/weight_select.R
 f4cd9ce3fbd8b29522a442aaf46c1781 *README.md
 0c6ad5b3446721162c89589e8077ab1c *build/partial.rdb
@@ -27,10 +27,10 @@ dbe132418c2352855bccae204be1b015 *data/icp.rda
 23fe461545d143df09b71e1a71d5baac *data/neitzel2003.rda
 44825496d64a26e0eb64bd39605031ba *inst/doc/texture.R
 dde7b1194c0d9ae90a7ee4cb3e1ccaff *inst/doc/texture.Rmd
-495bbfd8cf257f32f45f3b825d117a6f *inst/doc/texture.html
+aafdd954a60e8c89d20158ed98df4b00 *inst/doc/texture.html
 1585c44b8ab867f9dacfa840bfbeb63c *inst/doc/theme_publish.R
 2f7750ffcb05d29c01ab4ac361a201c2 *inst/doc/theme_publish.Rmd
-4b320d61c763d73fd592b0a23d7df883 *inst/doc/theme_publish.html
+a461253ce4a459239fa8c10b77d3d3a3 *inst/doc/theme_publish.html
 e719c75dea4fd3d1c2201649e117e692 *man/bisdom.Rd
 5152de1aea71d1ec69ddca8b65c4a6de *man/calibration.Rd
 6ac01a4e7273891dcff82f3eacb85065 *man/clayloam.Rd
@@ -45,10 +45,10 @@ c3777578d73d07993c6ce07eff6caec3 *man/rmse.Rd
 663e67c76b7cc83a45bc6b9e1f42a747 *man/signifig.Rd
 3605f24e67123250f55c4ca01cb2a9f1 *man/sorption.Rd
 8ac128bdef2caeacffcd9748e4b54172 *man/texture.Rd
-b32ea4a3338909a4fb852d04020e700f *man/theme_publish.Rd
+bdf04297a461d3eca6f49de56701d1be *man/theme_publish.Rd
 795db3c5a7478b7a198abfb03e1b0e3d *man/weight_select.Rd
 301bacea639f69de9b3c0c9be2253027 *tests/testthat.R
-d827766f243db6cd522e6250549cd4c1 *tests/testthat/Rplots.pdf
+89486245219e4282cb0120698289b40c *tests/testthat/Rplots.pdf
 6fa723ecfd12d58d8566bfee06d82bb1 *tests/testthat/_snaps/calibration.md
 bbbc56176e82e00ab05556b5f0be69f8 *tests/testthat/_snaps/calibration/plot.png
 6a9e400219a3034d496392cabd6faaaf *tests/testthat/_snaps/texture.md
@@ -62,7 +62,7 @@ bbbc56176e82e00ab05556b5f0be69f8 *tests/testthat/_snaps/calibration/plot.png
 21d94a9b7dff44a9a9e1dc7c8cda3f90 *tests/testthat/test-signifig.R
 7a670032ea7f65d65bc45919c86d62af *tests/testthat/test-sorption.R
 201eb583989cf528940dbb3b5f4612be *tests/testthat/test-texture.R
-58c385421bdd34ee8d2254607f6842a6 *tests/testthat/test-theme_publish.R
+4e4d81abe754d75910a0c59977184a0a *tests/testthat/test-theme_publish.R
 f42ee7cd68228d0f0a3d656b3c0bc5f7 *tests/testthat/test-weight_select.R
 dde7b1194c0d9ae90a7ee4cb3e1ccaff *vignettes/texture.Rmd
 05f78cf09a9f59e23f32b0b628cd4029 *vignettes/texture_files/figure-html/texture-1.png
