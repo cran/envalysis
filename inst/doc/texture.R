@@ -6,33 +6,29 @@ knitr::opts_chunk$set(
   comment = "# >"
 )
 
-## ----texture------------------------------------------------------------------
-# Load envalysis
+## ----texture, fig.align="center"----------------------------------------------
 library(envalysis)
 
-# Load and look at sample data
 data(clayloam)
-clayloam
+print(clayloam)
 
-# Calculate the particle size distribution
-tex <- texture(reading ~ blank + time + temperature, clayloam, plot = T)
-tex
+tex <- texture(reading ~ blank + time + temperature, data = clayloam)
 
-## ----classify-----------------------------------------------------------------
-# Load soiltexture
+print(tex)
+plot(tex)
+
+## ----soiltexture_package------------------------------------------------------
 library(soiltexture)
 
-# Prepare data
-germansoil <- data.frame(t(tex$din["Estimate",] * 100))
-names(germansoil) <- toupper(names(germansoil))
+## ----soiltexture_convert------------------------------------------------------
+germansoil <- as_tridata(tex, which = "din")
+ussoil <- as_tridata(tex, which = "usda")
 
-ussoil <- data.frame(t(tex$usda["Estimate",] * 100))
-names(ussoil) <- toupper(names(ussoil))
-
-# Get texture class, for example, in accordance with the German
-# "Bodenartendiagramm" (DE.BK94.TT)
+## ----soiltexture_classify-----------------------------------------------------
 TT.points.in.classes(germansoil, class.sys = "DE.BK94.TT")
-
-# Get USDA texture class (USDA.TT)
 TT.points.in.classes(ussoil, class.sys = "USDA.TT")
+
+## ----soiltexture_plot, echo = -1, fig.align="center"--------------------------
+par(cex = 0.75, cex.lab = 0.5, cex.axis = 0.5, cex.main = 1)
+TT.plot(class.sys = "DE.BK94.TT", tri.data = germansoil)
 

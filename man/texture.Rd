@@ -6,6 +6,9 @@
 \alias{texture.default}
 \alias{print.texture}
 \alias{plot.texture}
+\alias{as_tridata}
+\alias{as_tridata.default}
+\alias{as_tridata.texture}
 \title{ASTM soil texture analysis}
 \usage{
 texture(reading, ...)
@@ -28,13 +31,19 @@ texture(reading, ...)
 \method{print}{texture}(x, ...)
 
 \method{plot}{texture}(x, ...)
+
+as_tridata(x, ...)
+
+\method{as_tridata}{default}(x, ...)
+
+\method{as_tridata}{texture}(x, which = NULL, ...)
 }
 \arguments{
 \item{reading}{a numeric vector of data values providing the hydrometer
 readings at the bottom of the meniscus.}
 
-\item{\dots}{further arguments to be passed to \code{texture}() (currently not
-used), \code{print}(), or \code{plot}().}
+\item{\dots}{further arguments to be passed to \code{texture}() (currently
+not used), \code{print}(), or \code{plot}().}
 
 \item{formula}{an object of class '\code{\link[stats]{formula}}' of the form
 \code{reading ~ blank + time + temp}.}
@@ -64,32 +73,38 @@ best fitting model automatically.}
 \item{plot}{logical; if \code{TRUE} the particle size distribution is plotted.}
 
 \item{x}{an object of class '\code{texture}'.}
+
+\item{which}{character value indicating the soil texture classification
+system to export; accepts \code{"din"} or \code{"usda"}.}
 }
 \value{
-\code{texture} returns an object of \code{\link[base]{class}} '\code{texture}.
+\code{texture} returns an object of \code{\link[base]{class}} '\code{texture}'.
 The functions \code{print}() and \code{plot}() are available to retrieve the
 soil texture classes and the particle size distribution, respectively.
 
 An object of class '\code{texture}' is a list containing the following
 components:
 
-\tabular{ll}{
-\code{meta} \tab Measurement meta data\cr
-\code{distribution} \tab data frame providing the particle size
-distribution\cr
-\code{model} \tab information on the fitted \code{\link[drc]{drm}} model\cr
-\code{din} \tab Main DIN texture classes\cr
-\code{usda} \tab Main USDA texture classes\cr
+\describe{
+  \item{\code{meta}}{Measurement meta data}
+  \item{\code{distribution}}{data frame providing the particle size
+  distribution}
+  \item{\code{model}}{information on the fitted \code{\link[drc]{drm}} model}
+  \item{\code{din}}{Main DIN texture classes}
+  \item{\code{usda}}{Main USDA texture classes}
 }
+
+\code{as_tridata} converts '\code{texture}' to data.frames of a specific
+structure require for \code{\link[soiltexture]{soiltexture-package}}.
 }
 \description{
 Calculates the particle size distribution and both DIN and USDA texture
-classes from a series of hydrometer readings according to
-ASTM D422-63 (2007).
+classes from a series of hydrometer readings in accordance with ASTM D422-63
+(2007).
 }
 \examples{
 data(clayloam)
-texture(reading ~ blank + time + temperature, clayloam)
+texture(reading ~ blank + time + temperature, data = clayloam)
 
 }
 \references{
