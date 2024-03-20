@@ -13,11 +13,11 @@ library(envalysis)
 library(data.table)
 library(ggplot2)
 
-## ---- echo=F------------------------------------------------------------------
+## ----echo=F-------------------------------------------------------------------
 knitr::kable(phenolics$seq[c(1:4,73:74,76,78,80,83:84),], "simple",
              row.names = F)
 
-## ---- echo=F------------------------------------------------------------------
+## ----echo=F-------------------------------------------------------------------
 knitr::kable(phenolics$samples[c(1:2,4,41:42),], "simple",
              row.names = F)
 
@@ -52,6 +52,12 @@ dt$cal <- dt$seq[Type == "Standard", calibration(Area ~ `Spec Conc`) |>
                    as.list(c("coef", "adj.r.squared", "lod", "loq")),
                  by = .(Compound, Batch)]
 print(dt$cal)
+
+## ----predict------------------------------------------------------------------
+dt$pred <- dt$seq[Type == "Standard", calibration(Area ~ `Spec Conc`) |> 
+                    predict(),
+                 by = .(Compound, Batch)]
+head(dt$pred)
 
 ## ----blank_subtr--------------------------------------------------------------
 dt$seq[, `Clean Conc` := `Calc Conc` - mean(

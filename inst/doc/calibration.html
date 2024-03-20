@@ -11,7 +11,7 @@
 
 <meta name="author" content="Zacharias Steinmetz" />
 
-<meta name="date" content="2023-09-20" />
+<meta name="date" content="2024-03-20" />
 
 <title>Calibration workflow</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">Calibration workflow</h1>
 <h4 class="author">Zacharias Steinmetz</h4>
-<h4 class="date">2023-09-20</h4>
+<h4 class="date">2024-03-20</h4>
 
 </div>
 
@@ -667,6 +667,7 @@ instance.</p>
        by = .(Compound, Batch)]
 head(dt$seq)</code></pre>
 <pre><code># &gt;    Compound             Type Batch    Name     Area Spec Conc Calc Conc
+# &gt;      &lt;fctr&gt;           &lt;fctr&gt; &lt;int&gt;  &lt;char&gt;    &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
 # &gt; 1:  Tyrosol Extraction blank     1 Blank 1   0.0000        NA   0.00000
 # &gt; 2:  Tyrosol Extraction blank     1 Blank 2   0.0000        NA   0.00000
 # &gt; 3:  Tyrosol           Sample     1  ZS-001 328.3436        NA  43.23037
@@ -681,12 +682,28 @@ use.</p>
                  by = .(Compound, Batch)]
 print(dt$cal)</code></pre>
 <pre><code># &gt;    Compound Batch (Intercept) `Spec Conc` adj.r.squared       lod       loq
+# &gt;      &lt;fctr&gt; &lt;int&gt;       &lt;num&gt;       &lt;num&gt;         &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
 # &gt; 1:  Tyrosol     1  3.76202803    7.508184     0.9997915 0.0143933  5.925273
 # &gt; 2:  Tyrosol     2  3.07268449    7.601129     0.9992824 0.0092660 10.909912
 # &gt; 3:  Tyrosol     3  0.05587782    7.309053     0.9999764 0.0000000  2.311322
 # &gt; 4: Vanillin     1 25.17794786   51.529670     0.9998175 0.0040133  5.623778
 # &gt; 5: Vanillin     2 24.44314369   51.774820     0.9992359 0.0003509 11.408191
 # &gt; 6: Vanillin     3 10.62899985   50.819997     0.9999641 0.0000000  2.886073</code></pre>
+<p>Similarly, <code>predict()</code> may be used for plotting
+calibration curves independently of the <code>plot()</code>
+function.</p>
+<pre class="r"><code>dt$pred &lt;- dt$seq[Type == &quot;Standard&quot;, calibration(Area ~ `Spec Conc`) |&gt; 
+                    predict(),
+                 by = .(Compound, Batch)]
+head(dt$pred)</code></pre>
+<pre><code># &gt;    Compound Batch Spec.Conc       fit      lwr      upr
+# &gt;      &lt;fctr&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;    &lt;num&gt;
+# &gt; 1:  Tyrosol     1 0.4887750  7.431840 3.504021 11.35966
+# &gt; 2:  Tyrosol     1 0.6105099  8.345849 4.425043 12.26665
+# &gt; 3:  Tyrosol     1 0.7322449  9.259857 5.346040 13.17367
+# &gt; 4:  Tyrosol     1 0.8539798 10.173866 6.267011 14.08072
+# &gt; 5:  Tyrosol     1 0.9757148 11.087874 7.187956 14.98779
+# &gt; 6:  Tyrosol     1 1.0974497 12.001882 8.108875 15.89489</code></pre>
 </div>
 <div id="blank-subtraction" class="section level2">
 <h2>Blank subtraction</h2>
@@ -706,14 +723,17 @@ weight, and dilution factor.</p>
 
 dt$res[, Content := `Clean Conc` * (Extract / Weight) * Dilution]
 head(dt$res)</code></pre>
-<pre><code># &gt;      Name Compound   Type Batch      Area Spec Conc Calc Conc Clean Conc Day
-# &gt; 1: ZS-001  Tyrosol Sample     1  328.3436        NA  43.23037   43.23037   0
-# &gt; 2: ZS-001 Vanillin Sample     1 1876.9337        NA  35.93572   35.93572   0
-# &gt; 3: ZS-002  Tyrosol Sample     1  282.9309        NA  37.18195   37.18195   0
-# &gt; 4: ZS-002 Vanillin Sample     1 1578.6261        NA  30.14667   30.14667   0
-# &gt; 5: ZS-003  Tyrosol Sample     1  296.2863        NA  38.96072   38.96072   0
-# &gt; 6: ZS-003 Vanillin Sample     1 1593.6272        NA  30.43779   30.43779   0
+<pre><code># &gt; Key: &lt;Name&gt;
+# &gt;      Name Compound   Type Batch      Area Spec Conc Calc Conc Clean Conc   Day
+# &gt;    &lt;char&gt;   &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt; &lt;int&gt;
+# &gt; 1: ZS-001  Tyrosol Sample     1  328.3436        NA  43.23037   43.23037     0
+# &gt; 2: ZS-001 Vanillin Sample     1 1876.9337        NA  35.93572   35.93572     0
+# &gt; 3: ZS-002  Tyrosol Sample     1  282.9309        NA  37.18195   37.18195     0
+# &gt; 4: ZS-002 Vanillin Sample     1 1578.6261        NA  30.14667   30.14667     0
+# &gt; 5: ZS-003  Tyrosol Sample     1  296.2863        NA  38.96072   38.96072     0
+# &gt; 6: ZS-003 Vanillin Sample     1 1593.6272        NA  30.43779   30.43779     0
 # &gt;    Lighting Sterilization      Treatment Replicate Weight Extract Dilution
+# &gt;      &lt;fctr&gt;        &lt;fctr&gt;         &lt;fctr&gt;     &lt;int&gt;  &lt;num&gt;   &lt;num&gt;    &lt;int&gt;
 # &gt; 1:       UV    sterilized Photooxidation         1 2.5037    12.5        5
 # &gt; 2:       UV    sterilized Photooxidation         1 2.5037    12.5        5
 # &gt; 3:       UV    sterilized Photooxidation         2 2.5018    12.5        5
@@ -721,6 +741,7 @@ head(dt$res)</code></pre>
 # &gt; 5:       UV    sterilized Photooxidation         3 2.5048    12.5        5
 # &gt; 6:       UV    sterilized Photooxidation         3 2.5048    12.5        5
 # &gt;      Content
+# &gt;        &lt;num&gt;
 # &gt; 1: 1079.1621
 # &gt; 2:  897.0653
 # &gt; 3:  928.8800
